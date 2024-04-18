@@ -97,7 +97,7 @@ jobs:
 
               ${{ github.event.inputs.EXTRA_CMD }}; \
               chmod +x dumper.sh;\
-              ./dumper.sh '${{ github.event.inputs.ROM_URL }}' 
+              bash dumper.sh '${{ github.event.inputs.ROM_URL }}' 
               
               # This build was run from OkBuddyGSI 
               # Triggered by ${{ github.actor }} representing OkBuddyGSI
