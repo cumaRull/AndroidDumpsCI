@@ -26,9 +26,10 @@ env:
   EXTRA_CMD: ${{ github.event.inputs.EXTRA_CMD }}
 
 jobs:
-  start:
+  dump:
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
     runs-on: ubuntu-latest
-
     steps:
       # Cleanup 
       - name: Cleanup Step
@@ -36,11 +37,6 @@ jobs:
       # Check-out in order to access the repository's files.
       - name: Check-out to repository
         uses: actions/checkout@v4
-      # Set-up a spearate directory for the device.
-      - name: Set-up workspace environment
-        run: |
-          mkdir workspace
-          cd workspace
         continue-on-error: true      
       - name: Configure the 'crave' environment
         run: |
@@ -61,48 +57,11 @@ jobs:
              CRAVE_USERNAME: ${{  secrets.CRAVE_USERNAME  }}
              CRAVE_TOKEN: ${{  secrets.CRAVE_TOKEN  }}        
 
-      - name: Run crave devspace
-        run: |
-               crave devspace -- "if tmux has-session -t ghactionsdump; then 
-                 echo "Runner is already Running" 
-               else 
-                 tmux kill-session -t ghactionsdump;
-                 tmux new-session -d -s ghactionsdump
-                 tmux send-keys -t ghactionsdump './actions-runner-dump/run.sh' Enter 
-                 echo "Runner Started"
-               fi "
-  build:
-    runs-on: self-hosted
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}
-    steps:
-      # Clean the workflow before initialization.
-      - name: Cleanup
-        run: rm -rf ${PWD}/* /crave-devspaces/.repo
-      # Check-out in order to access the repository's files.
-      - name: Check-out to repository
-        uses: actions/checkout@v4
-      # Set-up a spearate directory for the device.
-      - name: Set-up workspace environment
-        run: |
-          mkdir workspace
-          cd workspace
-        continue-on-error: true      
-      - name: Configure the 'crave' environment
-        run: |
-            if [ "${DCDEVSPACE}" == "1" ]; then
-              echo 'No need to set up crave, we are already running in devspace!'
-            else
-              curl -s https://raw.githubusercontent.com/accupara/crave/master/get_crave.sh | bash -s --
-              mkdir ${HOME}/bin/
-              mv ${PWD}/crave ${HOME}/bin/
-              sudo ln -sf /home/${USER}/bin/crave /usr/bin/crave
-              mkdir ~/.ssh
-            fi
       - name: Extract using Crave
         timeout-minutes: 180  
         run: |
             git clone https://github.com/DumprX/DumprX
+            cp crave.conf DumprX/crave.conf
             cd DumprX
                 echo "${{ secrets.GITLAB_TOKEN }}" > .gitlab_token  # Only for Gitlab
                 echo "${{ secrets.GITLAB_GROUP }}" > .gitlab_group  # Only for Gitlab
@@ -116,7 +75,7 @@ jobs:
               crave push --projectID 77 .gitlab_instance -d /tmp/src/DumprX/.gitlab_instance
               crave push --projectID 77 .tg_token -d /tmp/src/DumprX/.tg_token
               crave push --projectID 77 .tg_chat -d /tmp/src/DumprX/.tg_chat
-              crave run --projectID 77 -- "git pull; \
+              crave run --no-patch -- "git pull; \
               rm -rf out/  input/; \
               git config --global user.name "${{ github.actor }}"; \
               git config --global user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"; \
