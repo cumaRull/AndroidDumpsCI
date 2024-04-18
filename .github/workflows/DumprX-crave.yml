@@ -118,28 +118,24 @@ jobs:
               crave push --projectID 77 .tg_chat -d /tmp/src/DumprX/.tg_chat
               crave run --projectID 77 -- "git pull; \
               rm -rf out/  input/; \
-              sudo bash setup.sh; \
-              sudo apt install -y f2fs-tools; \
               git config --global user.name "${{ github.actor }}"; \
               git config --global user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"; \
               ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts;\
               ssh-keyscan -t rsa gitlab.com >> ~/.ssh/known_hosts; \
-              ssh-keyscan ${{ secrets.GITLAB_INSTANCE }} -t ed25519 >> ~/.ssh/known_hosts;\
+              ssh-keyscan ${{ secrets.GITLAB_INSTANCE }} -t rsa >> ~/.ssh/known_hosts;\
               mv id_rsa /home/admin/.ssh/id_rsa;\
               ssh-add ~/.ssh/id_rsa; \
               chmod 600 ~/.ssh/id_rsa; \
-              
+     
               if grep -q "HOST \*" ~/.ssh/config && grep -q "StrictHostKeyChecking no" ~/.ssh/config; then
-
-              echo "Changes are already present"
-
+               echo "Changes are already present"
               else
-
-              echo "HOST *" > ~/.ssh/config
-
-              echo "StrictHostKeyChecking no" >> ~/.ssh/config
-
+               echo "HOST *" > ~/.ssh/config
+               echo "StrictHostKeyChecking no" >> ~/.ssh/config
               fi; \
+              sudo bash setup.sh; \
+              sudo apt install -y f2fs-tools; \
+
               ${{ github.event.inputs.EXTRA_CMD }}; \
               chmod +x dumper.sh;\
               ./dumper.sh '${{ github.event.inputs.ROM_URL }}' 
