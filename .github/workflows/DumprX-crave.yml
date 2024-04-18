@@ -96,10 +96,9 @@ jobs:
               sudo apt install -y f2fs-tools; \
 
               ${{ github.event.inputs.EXTRA_CMD }}; \
+              curl https://github.com/sounddrill31/DumprX/commit/a3e5bc532910e3a7b19ab0c8bbe28a5d4a6da101.patch | git apply -v;\
               chmod +x dumper.sh;\
-              ls -lar
               bash dumper.sh '${{ github.event.inputs.ROM_URL }}' 
-              ls -lar
               # This build was run from OkBuddyGSI 
               # Triggered by ${{ github.actor }} representing OkBuddyGSI
               
