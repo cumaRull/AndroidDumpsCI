@@ -64,6 +64,7 @@ jobs:
               echo "${{ secrets.PRIV_SSH_KEY }}" > ~/.ssh/id_rsa  # Only for Gitlab
               echo "${{ secrets.BOT_TOKEN }}" > .tg_token
               echo "${{ secrets.CHAT_ID }}" > .tg_chat
+              curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage -d chat_id=${{ secrets.GROUP_CHAT_ID }} -d text="test"
               chmod 600 ~/.ssh/id_rsa
               if grep -q "HOST \*" ~/.ssh/config && grep -q "StrictHostKeyChecking no" ~/.ssh/config; then
 
