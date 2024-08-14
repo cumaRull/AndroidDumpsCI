@@ -9,6 +9,7 @@ on:
        # Requester
       USERNAME:
         description: "Telegram Username of Who Requested The Dump"
+        required: true
       EXTRA_CMD:
         description: "Any Extra Command to Run Before Dump"
         required: false
@@ -37,7 +38,7 @@ jobs:
          run: |
                WORKFLOW_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
                echo "WORKFLOW_URL=$WORKFLOW_URL" >> $GITHUB_ENV
-       - name: send a message (test for something epic ig)
+       - name: Give the user the run link
          run: |
                curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage -d chat_id=${{ secrets.GROUP_CHAT_ID }} -d text="Dear $USERNAME\n follow progress here: $WORKFLOW_URL"
     # Cleanup The Actions Workspace Using Custom Composite Run Actions
