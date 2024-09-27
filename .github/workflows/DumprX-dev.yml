@@ -47,8 +47,8 @@ jobs:
               mkdir -p ~/.ssh
               ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
               ssh-keyscan -t rsa gitlab.com >> ~/.ssh/known_hosts
-              git config --global user.name "Sushrut1101"
-              git config --global user.email "guptasushrut@gmail.com"
+              git config --global user.name "yuzumi86"
+              git config --global user.email "rullsmodsone@gmail.com"
 
        - name: Setup Config envs
          working-directory: DumprX
