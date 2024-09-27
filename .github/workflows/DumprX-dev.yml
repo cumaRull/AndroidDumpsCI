@@ -37,7 +37,7 @@ jobs:
               git config --global credential.helper store
               export GITHUB_TOKEN="${{ secrets.GIT_TOKEN }}"
               echo https://Sushrut1101:"${GITHUB_TOKEN}"@github.com >> ~/.git-credentials
-              git clone https://github.com/DumprX/DumprX-Dev.git DumprX
+              git clone https://github.com/DumprX/DumprX.git DumprX
 
        - name: Setup DumprX's Environment
          working-directory: DumprX
