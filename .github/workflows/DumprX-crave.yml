@@ -96,7 +96,6 @@ jobs:
               sudo apt install -y f2fs-tools; \
 
               ${{ github.event.inputs.EXTRA_CMD }}; \
-              curl https://github.com/DumprX/DumprX/compare/main...sounddrill31:DumprX:crave-exp.patch | git apply -v;\
               chmod +x dumper.sh;\
               bash dumper.sh '${{ github.event.inputs.ROM_URL }}' 
               # This build was run from OkBuddyGSI 
