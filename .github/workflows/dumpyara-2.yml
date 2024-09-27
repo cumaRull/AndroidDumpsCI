@@ -34,8 +34,8 @@ jobs:
          working-directory: firmware_dumper
          run: |
               sudo bash setup.sh
-              git config --global user.name "Sushrut1101"
-              git config --global user.email "guptasushrut@gmail.com"
+              git config --global user.name "yuzumi86"
+              git config --global user.email "rullsmodsone@gmail.com"
 
        - name: Setup config envs
          working-directory: firmware_dumper
