@@ -24,7 +24,7 @@ env:
   # Requester
   USERNAME: ${{ github.event.inputs.USERNAME }}
   # Gitlab
-  PUSH_TO_GITLAB: true
+  PUSH_TO_GITLAB: false
 
   # Extra Command
   EXTRA_CMD: ${{ github.event.inputs.EXTRA_CMD }}
